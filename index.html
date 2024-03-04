@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confusion Matrix Generator</title>
+</head>
+<body>
+    <h1>Confusion Matrix Generator</h1>
+    <form action="calcConfusionMatrix.py" method="post">
+        <label for="classifierType">Is this a binary type classification? (Y/N): </label>
+        <input type="text" id="classifierType" name="classifierType"><br><br>
+        <!-- For binary classification -->
+        <div id="binary" style="display: none;">
+            <label for="tP">True Positive: </label>
+            <input type="text" id="tP" name="tP"><br>
+            <label for="fP">False Positive: </label>
+            <input type="text" id="fP" name="fP"><br>
+            <label for="tN">True Negative: </label>
+            <input type="text" id="tN" name="tN"><br>
+            <label for="fN">False Negative: </label>
+            <input type="text" id="fN" name="fN"><br>
+        </div>
+        <!-- For multi-class classification -->
+        <div id="multi" style="display: none;">
+            <!-- Input fields for multi-class confusion matrix -->
+        </div>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Output section -->
+    <div id="output" style="display: none;">
+        <h2>Output</h2>
+        <p id="precision"></p>
+        <p id="recall"></p>
+        <p id="f1"></p>
+        <h3>Confusion Matrix</h3>
+        <table id="confusionMatrix">
+            <!-- Confusion matrix will be displayed here -->
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('classifierType').addEventListener('change', function () {
+            var binaryDiv = document.getElementById('binary');
+            var multiDiv = document.getElementById('multi');
+            if (this.value === 'Y') {
+                binaryDiv.style.display = 'block';
+                multiDiv.style.display = 'none';
+            } else {
+                binaryDiv.style.display = 'none';
+                multiDiv.style.display = 'block';
+            }
+        });
+
+        // Function to update the confusion matrix
+        function updateConfusionMatrix(matrix) {
+            var table = document.getElementById("confusionMatrix");
+            table.innerHTML = "";
+            for (var i = 0; i < matrix.length; i++) {
+                var row = table.insertRow();
+                for (var j = 0; j < matrix[i].length; j++) {
+                    var cell = row.insertCell();
+                    cell.appendChild(document.createTextNode(matrix[i][j]));
+                }
+            }
+        }
+    </script>
+</body>
+</html>
